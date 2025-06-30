@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Usuário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style/cadastro.css" />
+</head>
+<body>
+  <div class="cadastro-container">
+    <h2>Criar Conta</h2>
+    <form id="formCadastro" novalidate>
+      <div class="campo">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required />
+        <span class="status error" id="statusNome"></span>
+      </div>
+
+      <div class="campo">
+        <label for="sobrenome">Sobrenome:</label>
+        <input type="text" id="sobrenome" name="sobrenome" required />
+        <span class="status error" id="statusSobrenome"></span>
+      </div>
+
+      <div class="campo">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+        <span class="status error" id="statusEmail"></span>
+      </div>
+
+      <div class="campo">
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required />
+        <span class="status error" id="statusCpf"></span>
+      </div>
+
+      <div class="campo senha-container">
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required />
+        <span class="status error" id="statusSenha"></span>
+      </div>
+
+      <div class="campo senha-container">
+        <label for="confirmarSenha">Confirmar Senha:</label>
+        <input type="password" id="confirmarSenha" required />
+        <span class="status error" id="statusConfirmarSenha"></span>
+      </div>
+
+      <button type="submit" id="btnCriarConta" disabled>Criar Conta</button>
+    </form>
+
+    <div class="botaovoltar">
+	  <button type="button">Voltar</button>
+	</div>
+
+  </div>
+
+  <script type="module" src="/script/cadastro.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{
+  "name": "the-boar",
+  "version": "1.0.0",
+  "description": "A simple Node app built on fastify, instantly up and running.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "jsdoc": "jsdoc -c jsdoc.conf.json", 
+    "cssdoc": "node build-cssdoc.js",
+    "docs": "npm run jsdoc && npm run cssdoc"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^6.0.0",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/helmet": "^11.0.0",
+    "@fastify/static": "^6.12.0",
+    "@fastify/view": "^8.2.0",
+    "dotenv": "^16.5.0",
+    "fastify": "^4.29.1",
+    "handlebars": "^4.7.8",
+    "mongodb": "^6.16.0"
+  },
+  "devDependencies": {
+    "cssdoc": "^1.0.0",
+    "jsdoc": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fmateux/theboar"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fmateux/theboar"
+  },
+  "homepage": "https://github.com/fmateux/theboar"
+}

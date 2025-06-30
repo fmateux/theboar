@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: mongodb</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: mongodb</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Módulo para operações com banco de dados MongoDB, incluindo conexão e acesso às coleções.</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".MyDataBase"><span class="type-signature">(static, constant) </span>MyDataBase<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Nome do banco de dados.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MyDataBaseCollections"><span class="type-signature">(static, constant) </span>MyDataBaseCollections<span class="type-signature"> :Object.&lt;string, string></span></h4>
+
+
+
+
+<div class="description">
+    Nomes das coleções usadas no banco de dados.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;string, string></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".client"><span class="type-signature">(static, constant) </span>client<span class="type-signature"> :MongoClient</span></h4>
+
+
+
+
+<div class="description">
+    Cliente MongoDB configurado.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">MongoClient</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".db"><span class="type-signature">(static) </span>db<span class="type-signature"> :Db|undefined</span></h4>
+
+
+
+
+<div class="description">
+    Instância do banco de dados (armazenada após conexão).
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Db</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".uri"><span class="type-signature">(static, constant) </span>uri<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    URI de conexão ao MongoDB obtida do arquivo .env.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".connect"><span class="type-signature">(async, static) </span>connect<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Db>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Conecta ao banco de dados MongoDB, reutilizando a conexão se já estiver estabelecida.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_db_mongodb.js.html">src/db/mongodb.js</a>, <a href="src_db_mongodb.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Caso não consiga conectar ao banco
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Instância do banco de dados "TheBoar"
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Db></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cadastro.html">cadastro</a></li><li><a href="module-cssdoc.html">cssdoc</a></li><li><a href="module-index.html">index</a></li><li><a href="module-login.html">login</a></li><li><a href="module-loginAdmin.html">loginAdmin</a></li><li><a href="module-models.html">models</a></li><li><a href="module-mongodb.html">mongodb</a></li><li><a href="module-pedidos.html">pedidos</a></li><li><a href="module-perfil.html">perfil</a></li><li><a href="module-perfilAdmin.html">perfilAdmin</a></li><li><a href="module-slides.html">slides</a></li><li><a href="module-validarUsuario.html">validarUsuario</a></li></ul><h3>Externals</h3><ul><li><a href="external-Db.html">Db</a></li><li><a href="external-MongoClient.html">MongoClient</a></li></ul><h3>Classes</h3><ul><li><a href="module-models.Cardapio.html">Cardapio</a></li><li><a href="module-models.CardapioItem.html">CardapioItem</a></li><li><a href="module-models-CPF.html">CPF</a></li><li><a href="module-models-Pedido.html">Pedido</a></li><li><a href="module-models-Usuario.html">Usuario</a></li></ul><h3>Global</h3><ul><li><a href="global.html#obterAutenticacao">obterAutenticacao</a></li><li><a href="global.html#respostaNaoAutorizado">respostaNaoAutorizado</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jun 29 2025 22:11:29 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

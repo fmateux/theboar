@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meus Pedidos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style/pedidos.css" />
+</head>
+<body>
+  <div class="pedidos-container">
+    <h2>Meus Pedidos</h2>
+
+    <div class="meus-pedidos">
+      <table id="tabelaPedidos">
+        <thead>
+          <tr>
+            <th>Pedido</th>
+            <th>Data</th>
+            <th>Itens</th>
+            <th>Observação</th>
+            <th>Status</th>
+            <th>Valor Total</th>
+          </tr>
+        </thead>
+        <tbody id="corpoPedidos"></tbody>
+      </table>
+    </div>
+
+    <div class="pedido-flex">
+      <section class="cardapio">
+        <h3>Cardápio</h3>
+        <table id="tabelaCardapio">
+          <thead>
+            <tr>
+              <th>Prato</th>
+              <th>Descrição</th>
+              <th>Preço</th>
+              <th>Qtd</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each cardapio}}
+              <tr
+                data-id="{{this.id}}"
+                data-titulo="{{this.titulo}}"
+                data-tipo="{{this.tipo}}"
+                data-descricao="{{this.descricao}}"
+                data-valor="{{this.valor}}"
+              >
+                <td>{{this.tipo}}</td>
+                <td>{{this.descricao}}</td>
+                <td>R$ {{this.valor}}</td>
+                <td>
+                  <select class="quantidade-select">
+                    {{#each (arrayFromTo 0 10)}}
+                      <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                  </select>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="novo-pedido">
+        <h3>Fazer Pedido</h3>
+        <form id="formPedido">
+          <div id="itensSelecionados">
+            <p>Nenhum item selecionado.</p>
+          </div>
+
+          <label for="observacao">Observação (opcional):</label>
+          <textarea id="observacao" name="observacao" rows="2" placeholder="Ex: sem cebola..."></textarea>
+
+          <div class="total-container">
+            <label for="valorTotal"><strong>Total:</strong></label>
+            <input type="text" id="valorTotal" name="valorTotal" readonly value="0.00" />
+          </div>
+
+          <button type="submit">Fazer Pedido</button>
+          <div id="msgResposta"></div>
+        </form>
+      </section>
+    </div>
+
+    <button type="button" id="btnVoltarPedidos">Voltar</button>
+  </div>
+
+  <script src="/script/pedidos.js" defer></script>
+</body>
+</html>

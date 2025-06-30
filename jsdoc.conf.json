@@ -1,0 +1,12 @@
+{
+  "source": {
+    "include": ["src/",
+				"public/",
+				"server.js",
+				"build-cssdoc.js"]
+  },
+  "opts": {
+    "destination": "./docs/js",
+    "recurse": true
+  }
+}

@@ -1,0 +1,126 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  /* Base para rems */
+  line-height: 1.5;
+}
+
+body,
+.reveal {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  /* Fundo claro para slides */
+  color: #333;
+}
+
+/*----------------------------
+  Tipografia centralizada
+----------------------------*/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal p {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/*----------------------------
+  Seções Reveal.js
+----------------------------*/
+.reveal section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  /* ~40px */
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/*----------------------------
+  Iframe de Demonstração
+----------------------------*/
+iframe.demo-frame {
+  width: 90%;
+  /* fluido até max-width */
+  max-width: 72rem;
+  /* ~1152px */
+  aspect-ratio: 16 / 9;
+  /* mantém proporção */
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  /* ~8px */
+  margin: 1.5rem auto;
+  /* espaçamento antes e depois */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/*----------------------------
+  Botão Primário
+----------------------------*/
+.button {
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  /* ~12px 24px */
+  font-weight: 600;
+  border-radius: 0.5rem;
+  /* ~8px */
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/*----------------------------
+  Ajustes para telas pequenas
+----------------------------*/
+@media (max-width: 768px) {
+  iframe.demo-frame {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .reveal section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+    /* reduz fonte geral */
+  }
+
+  iframe.demo-frame {
+    aspect-ratio: 4 / 3;
+    /* menor proporção se necessário */
+    margin: 1rem 0;
+  }
+
+  .button {
+    width: 100%;
+    /* botões em bloco */
+    text-align: center;
+    padding: 0.65rem 1rem;
+  }
+
+  .reveal section {
+    padding: 1rem;
+  }
+}

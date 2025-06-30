@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/db/script/mongodb.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/db/script/mongodb.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file mongodb.js
+ * @description Módulo para operações com banco de dados MongoDB, incluindo conexão, cadastro, autenticação, busca e atualização de usuários.
+ */
+
+/**
+ * @module mongodb
+ */
+
+require('dotenv').config();
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = process.env.MONGO_URI;
+const client = new MongoClient(uri, { serverApi: ServerApiVersion.v1 });
+
+/**
+ * Conecta ao banco de dados MongoDB, reutilizando a conexão se já estiver estabelecida.
+ * @async
+ * @function connect
+ * @returns {Promise} Instância do banco de dados "TheBoarCadastro"
+ * @throws {Error} Caso não consiga conectar ao banco
+ * @memberof module:mongodb
+ */
+async function connect() {
+  if (!client.topology || !client.topology.isConnected()) {
+    await client.connect();
+  }
+  return client.db("TheBoarCadastro");
+}
+
+/**
+ * Cadastra um novo usuário no banco de dados.
+ * Verifica se o e-mail ou CPF já estão cadastrados e lança erro em caso positivo.
+ * @async
+ * @function cadastrarUsuario
+ * @param {Object} dados - Dados do usuário a serem cadastrados
+ * @param {string} dados.nome - Nome do usuário
+ * @param {string} dados.sobrenome - Sobrenome do usuário
+ * @param {string} dados.email - E-mail do usuário
+ * @param {string} dados.cpf - CPF do usuário
+ * @param {string} dados.senha - Senha do usuário
+ * @returns {Promise&lt;boolean>} Retorna true se cadastro for bem-sucedido
+ * @throws {Error} Caso e-mail ou CPF já estejam cadastrados
+ * @memberof module:mongodb
+ */
+async function cadastrarUsuario(dados) {
+  const db = await connect();
+  const usuarios = db.collection("Usuarios");
+
+  const existEMail = await usuarios.findOne({ email: dados.email });
+  const existCPF = await usuarios.findOne({ cpf: dados.cpf });
+
+  if (existEMail) throw new Error("E-Mail já cadastrado");
+  if (existCPF) throw new Error("CPF já cadastrado");
+
+  await usuarios.insertOne(dados);
+  return true;
+}
+
+/**
+ * Autentica um usuário pelo e-mail e senha.
+ * Retorna dados básicos do usuário se autenticado com sucesso.
+ * @async
+ * @function autenticarUsuario
+ * @param {string} email - E-mail do usuário
+ * @param {string} senha - Senha do usuário
+ * @returns {Promise&lt;{nome: string, email: string}>} Dados do usuário autenticado
+ * @throws {Error} Caso e-mail não cadastrado ou senha inválida
+ * @memberof module:mongodb
+ */
+async function autenticarUsuario(email, senha) {
+  const db = await connect();
+  const usuarios = db.collection("Usuarios");
+  const usuario = await usuarios.findOne({ email, senha });
+
+  if (!usuario) {
+    const usuarioEmailExiste = await usuarios.findOne({ email });
+    if (!usuarioEmailExiste) throw new Error("E-Mail Não Cadastrado");
+    else throw new Error("Senha Inválida");
+  }
+
+  return { nome: usuario.nome, email: usuario.email };
+}
+
+/**
+ * Busca dados completos de um usuário pelo e-mail.
+ * @async
+ * @function buscarUsuario
+ * @param {string} email - E-mail do usuário a ser buscado
+ * @returns {Promise&lt;{nome: string, sobrenome: string, email: string, cpf: string, senha: string}>} Dados do usuário encontrado
+ * @throws {Error} Caso usuário não seja encontrado
+ * @memberof module:mongodb
+ */
+async function buscarUsuario(email) {
+  const db = await connect();
+  const usuarios = db.collection("Usuarios");
+  const usuario = await usuarios.findOne({ email });
+  if (!usuario) {
+    throw new Error("Usuário não encontrado");
+  }
+  const { nome, sobrenome, email: userEmail, cpf, senha } = usuario;
+  return { nome, sobrenome, email: userEmail, cpf, senha };
+}
+
+/**
+ * Atualiza os dados de um usuário identificado pelo e-mail.
+ * @async
+ * @function atualizarUsuario
+ * @param {string} email - E-mail do usuário a ser atualizado
+ * @param {Object} novosDados - Objeto com os campos e valores a atualizar
+ * @returns {Promise&lt;boolean>} Retorna true se atualização for bem-sucedida
+ * @throws {Error} Caso usuário não seja encontrado para atualização
+ * @memberof module:mongodb
+ */
+async function atualizarUsuario(email, novosDados) {
+  const db = await connect();
+  const usuarios = db.collection("Usuarios");
+
+  const resultado = await usuarios.updateOne(
+    { email },
+    { $set: novosDados }
+  );
+
+  if (resultado.matchedCount === 0) {
+    throw new Error("Usuário não encontrado para atualização");
+  }
+
+  return true;
+}
+
+/**
+ * Busca todos os usuários do banco, com acesso restrito ao administrador.
+ * @async
+ * @function buscarUsuarios
+ * @param {string} emailLogado - E-mail do usuário que está solicitando a lista
+ * @returns {Promise&lt;Array&lt;Object>>} Lista de usuários (sem a senha)
+ * @throws {Error} Caso o usuário não seja o administrador
+ * @memberof module:mongodb
+ */
+async function buscarUsuarios(emailLogado) {
+  if (emailLogado !== "admin@admin.com") {
+    throw new Error("Acesso negado. Somente o administrador pode visualizar todos os usuários.");
+  }
+
+  const db = await connect();
+  const usuarios = db.collection("Usuarios");
+
+  const lista = await usuarios.find({}).toArray();
+
+  return lista;
+}
+
+module.exports = {
+  connect,
+  cadastrarUsuario,
+  autenticarUsuario,
+  buscarUsuario,
+  atualizarUsuario,
+  buscarUsuarios,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-User.html">User</a></li><li><a href="module-cadastro.html">cadastro</a></li><li><a href="module-cssdoc.html">cssdoc</a></li><li><a href="module-login.html">login</a></li><li><a href="module-loginAdmin.html">loginAdmin</a></li><li><a href="module-mongodb.html">mongodb</a></li><li><a href="module-perfil.html">perfil</a></li><li><a href="module-perfilAdmin.html">perfilAdmin</a></li></ul><h3>Classes</h3><ul><li><a href="module-User.exports.CPF.html">exports.CPF</a></li><li><a href="module-User.exports.User.html">exports.User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#botoesDiv">botoesDiv</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#statusLogin">statusLogin</a></li><li><a href="global.html#verificarLogin">verificarLogin</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Jun 14 2025 21:04:25 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

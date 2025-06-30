@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/script/perfil.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/script/perfil.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file perfil.js
+ * @description Script responsável pelo controle de edição e atualização de perfil do usuário, incluindo exibição e ocultação da senha.
+ */
+
+/**
+ * @module perfil
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  /**
+   * Botão para ativar modo de edição do perfil.
+   * @type {HTMLButtonElement}
+   * @memberof module:perfil
+   */
+  const btnEditar = document.getElementById('btnEditar');
+
+  /**
+   * Botão para salvar as alterações do perfil.
+   * @type {HTMLButtonElement}
+   * @memberof module:perfil
+   */
+  const btnSalvar = document.getElementById('btnSalvar');
+
+  /**
+   * Botão para voltar da tela de perfil.
+   * @type {HTMLButtonElement}
+   * @memberof module:perfil
+   */
+  const btnVoltar = document.getElementById('btnVoltar');
+
+  /**
+   * Formulário do perfil do usuário.
+   * @type {HTMLFormElement}
+   * @memberof module:perfil
+   */
+  const form = document.getElementById('formPerfil');
+
+  /**
+   * Inputs do formulário editáveis (text, email e password).
+   * @type {NodeListOf&lt;HTMLInputElement>}
+   * @memberof module:perfil
+   */
+  const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+
+  /**
+   * Campo de senha do formulário.
+   * @type {HTMLInputElement}
+   * @memberof module:perfil
+   */
+  const senhaInput = document.getElementById('senha');
+
+  /**
+   * Ícone para alternar a visibilidade da senha.
+   * @type {HTMLElement}
+   * @memberof module:perfil
+   */
+  const togglePassword = document.getElementById('togglePassword');
+  
+  /**
+   * Botão para navegar até a página de pedidos.
+   * @type {HTMLButtonElement}
+   * @memberof module:perfil
+   */
+  const btnPedidos = document.getElementById('btnPedidos');
+
+  // Inicialmente, esconder botão salvar e ícone do olho
+  btnSalvar.style.display = 'none';
+  togglePassword.style.display = 'none';
+
+  /**
+   * Habilita edição dos campos do formulário e mostra elementos apropriados.
+   * @function
+   * @memberof module:perfil
+   */
+  btnEditar.addEventListener('click', () => {
+    inputs.forEach(input => input.disabled = false);
+    togglePassword.style.display = 'inline-block';
+    btnSalvar.style.display = 'inline-block';
+    btnEditar.style.display = 'none';
+  });
+
+  /**
+   * Envia os dados atualizados do perfil via POST em JSON e atualiza a interface de acordo.
+   * @function
+   * @memberof module:perfil
+   * @param {Event} e Evento de clique
+   * @returns {Promise&lt;void>}
+   */
+  btnSalvar.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const dados = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('/perfil/atualizar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(result.message);
+        inputs.forEach(input => input.disabled = true);
+        btnSalvar.style.display = 'none';
+        togglePassword.style.display = 'none';
+        btnEditar.style.display = 'inline-block';
+        senhaInput.type = 'password';
+        togglePassword.textContent = '👁️';
+      } else {
+        alert('Erro: ' + result.message);
+      }
+    } catch (error) {
+      alert('Erro ao salvar: ' + error.message);
+    }
+  });
+
+  /**
+   * Alterna a visibilidade do campo de senha entre texto e senha.
+   * @function
+   * @memberof module:perfil
+   */
+  togglePassword.addEventListener('click', () => {
+    if (senhaInput.type === 'password') {
+      senhaInput.type = 'text';
+      togglePassword.textContent = '🙈';
+    } else {
+      senhaInput.type = 'password';
+      togglePassword.textContent = '👁️';
+    }
+  });
+  
+  /**
+   * Redireciona para a página de pedidos.
+   * @function
+   * @memberof module:perfil
+   */
+  btnPedidos.addEventListener('click', () => {
+    window.location.href = '/pedidos';
+  });
+
+  /**
+   * Voltar para página anterior.
+   * @function
+   * @memberof module:perfil
+   */
+  btnVoltar.addEventListener('click', () => {
+    window.location.href = '/';
+  });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cadastro.html">cadastro</a></li><li><a href="module-cssdoc.html">cssdoc</a></li><li><a href="module-index.html">index</a></li><li><a href="module-login.html">login</a></li><li><a href="module-loginAdmin.html">loginAdmin</a></li><li><a href="module-models.html">models</a></li><li><a href="module-mongodb.html">mongodb</a></li><li><a href="module-pedidos.html">pedidos</a></li><li><a href="module-perfil.html">perfil</a></li><li><a href="module-perfilAdmin.html">perfilAdmin</a></li><li><a href="module-slides.html">slides</a></li><li><a href="module-validarUsuario.html">validarUsuario</a></li></ul><h3>Externals</h3><ul><li><a href="external-Db.html">Db</a></li><li><a href="external-MongoClient.html">MongoClient</a></li></ul><h3>Classes</h3><ul><li><a href="module-models.Cardapio.html">Cardapio</a></li><li><a href="module-models.CardapioItem.html">CardapioItem</a></li><li><a href="module-models-CPF.html">CPF</a></li><li><a href="module-models-Pedido.html">Pedido</a></li><li><a href="module-models-Usuario.html">Usuario</a></li></ul><h3>Global</h3><ul><li><a href="global.html#obterAutenticacao">obterAutenticacao</a></li><li><a href="global.html#respostaNaoAutorizado">respostaNaoAutorizado</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jun 29 2025 22:11:29 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

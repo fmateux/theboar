@@ -1,0 +1,134 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  /* Base responsiva de tipografia */
+  line-height: 1.4;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  /* Garante espaço em telas pequenas */
+}
+
+/*----------------------------
+  Container principal
+----------------------------*/
+.apresentacao-container {
+  background-color: #fff;
+  padding: 2rem;
+  /* 2rem ~ 32px */
+  border-radius: 0.5rem;
+  /* 0.5rem ~ 8px */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 36rem;
+  /* 36rem ~ 576px */
+  width: 100%;
+  /* Fluido até max-width */
+  text-align: center;
+}
+
+/*----------------------------
+  Tipografia
+----------------------------*/
+.apresentacao-container h1 {
+  font-size: 2rem;
+  /* 32px */
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.apresentacao-container p {
+  font-size: 1rem;
+  /* 16px */
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/*----------------------------
+  Lista de links
+----------------------------*/
+.apresentacao-links {
+  list-style: none;
+  margin-top: 1.5rem;
+}
+
+.apresentacao-links li {
+  margin-bottom: 1rem;
+}
+
+.apresentacao-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #007bff;
+  transition: color 0.2s ease;
+}
+
+.apresentacao-links a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/*----------------------------
+  Botão “Voltar”
+----------------------------*/
+.botaovoltar button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #c04444;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botaovoltar button:hover {
+  background-color: #a03939;
+}
+
+/*----------------------------
+  Ajustes para telas pequenas
+----------------------------*/
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+    /* reduz toda tipografia */
+  }
+
+  .apresentacao-container {
+    padding: 1rem;
+    max-width: 90%;
+    /* ocupa a maior parte da largura */
+  }
+
+  .apresentacao-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .apresentacao-links a {
+    font-size: 0.9rem;
+  }
+
+  .botaovoltar button {
+    width: 100%;
+    /* botão de largura total */
+  }
+}

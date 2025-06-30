@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: build-cssdoc.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: build-cssdoc.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file build-cssdoc.js
+ * @description Gera documentação HTML a partir de comentários customizados em arquivos CSS.
+ * Os blocos de documentação devem estar entre /*--- e ---*\/, contendo title, section e resume.
+ * Lê arquivos CSS em 'public/style' e gera HTML em 'docs/css'.
+ * @module cssdoc
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * Extrai blocos de documentação CSS formatados no padrão customizado do CSS.
+ * Cada bloco deve estar entre /*--- e ---*\/ com chaves title, section e resume.
+ *
+ * @function
+ * @param {string} cssContent Conteúdo do arquivo CSS
+ * @returns {Array&lt;Object>} Array de objetos com as chaves title, section e resume
+ * @memberof module:cssdoc
+ */
+function cssdoc(cssContent) {
+	const blocks = [];
+	const regex = /\/\*---([\s\S]*?)---\*\//g;
+	let match;
+	while ((match = regex.exec(cssContent)) !== null) {
+		const rawContent = match[1].trim();
+		const block = {};
+		rawContent.split('\n').forEach(line => {
+			const [key, ...rest] = line.trim().split(':');
+			if (key &amp;&amp; rest.length > 0) {
+				block[key.trim()] = rest.join(':').trim();
+			}
+		});
+		blocks.push(block);
+	}
+	return blocks;
+}
+
+/**
+ * Gera o HTML da documentação para um arquivo CSS a partir dos blocos extraídos.
+ *
+ * @function
+ * @param {string} title Nome do arquivo CSS (ex: cadastro.css)
+ * @param {Array&lt;Object>} docs Blocos de documentação extraídos via cssdoc()
+ * @returns {string} Código HTML formatado da documentação
+ * @memberof module:cssdoc
+ */
+function generateHTML(title, docs) {
+	return `&lt;!DOCTYPE html>
+&lt;html lang="pt-BR">
+&lt;head>
+	&lt;meta charset="UTF-8" />
+	&lt;title>Documentação CSS - ${title}&lt;/title>
+	&lt;style>
+		body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; background: #fff; }
+		h1 { color: #333; }
+		section { margin-bottom: 20px; }
+		.block { border: 1px solid #ccc; border-radius: 8px; padding: 10px; background: #f9f9f9; }
+		.title { font-weight: bold; font-size: 1.2em; margin-bottom: 5px; }
+		.resume { color: #555; font-style: italic; }
+		a { color: #007acc; text-decoration: none; }
+		a:hover { text-decoration: underline; }
+	&lt;/style>
+&lt;/head>
+&lt;body>
+	&lt;h1>Documentação CSS: ${title}&lt;/h1>
+	&lt;p>&lt;a href="index.html">Voltar ao índice&lt;/a>&lt;/p>
+	${docs.map(doc => `
+		&lt;section class="block">
+			&lt;div class="title">${doc.title || 'Sem título'}&lt;/div>
+			&lt;div>&lt;strong>Seção:&lt;/strong> ${doc.section || 'Desconhecida'}&lt;/div>
+			&lt;div class="resume">${doc.resume || 'Sem resumo'}&lt;/div>
+		&lt;/section>
+	`).join('\n')}
+	&lt;p>&lt;a href="index.html">Voltar ao índice&lt;/a>&lt;/p>
+&lt;/body>
+&lt;/html>`;
+}
+
+/**
+ * Gera a página HTML do índice com links para todos os arquivos de documentação CSS gerados.
+ * 
+ * @function
+ * @param {string[]} files Lista de nomes dos arquivos HTML gerados (ex: ['cadastro.html'])
+ * @returns {string} Código HTML da página índice
+ * @memberof module:cssdoc
+ */
+function generateIndexHTML(files) {
+	return `&lt;!DOCTYPE html>
+&lt;html lang="pt-BR">
+&lt;head>
+	&lt;meta charset="UTF-8" />
+	&lt;title>Documentação CSS – Índice&lt;/title>
+	&lt;style>
+		body {
+			font-family: "Segoe UI", Tahoma, sans-serif;
+			background-color: #fff;
+			color: #333;
+			margin: 0;
+			padding: 0 20px;
+		}
+		.container {
+			max-width: 900px;
+			margin: 40px auto;
+			padding: 20px;
+		}
+		h1 {
+			font-size: 28px;
+			border-bottom: 1px solid #ccc;
+			padding-bottom: 10px;
+			margin-bottom: 30px;
+		}
+		ul {
+			list-style: none;
+			padding-left: 0;
+		}
+		li {
+			margin: 10px 0;
+		}
+		a {
+			text-decoration: none;
+			color: #2a6db0;
+			font-weight: bold;
+		}
+		a:hover {
+			text-decoration: underline;
+			color: #1a4c85;
+		}
+		.footer {
+			margin-top: 60px;
+			font-size: 0.85em;
+			color: #777;
+			border-top: 1px solid #eee;
+			padding-top: 15px;
+		}
+	&lt;/style>
+&lt;/head>
+&lt;body>
+	&lt;div class="container">
+		&lt;h1>Índice da Documentação CSS de Cada Página&lt;/h1>
+		&lt;ul>
+			${files.map(f => `
+			&lt;li>&lt;a href="${f}">${f.replace(/^css_/, '')}&lt;/a>&lt;/li>
+			`).join('\n')}
+		&lt;/ul>
+		&lt;div class="footer">
+			Documentação gerada usando CSS Doc.
+		&lt;/div>
+	&lt;/div>
+&lt;/body>
+&lt;/html>`;
+}
+
+/**
+ * Caminho para o diretório de entrada dos arquivos CSS.
+ * @constant {string}
+ * @memberof module:cssdoc
+ */
+const dir = path.join(__dirname, 'public', 'style');
+
+/**
+ * Caminho para o diretório de saída da documentação gerada.
+ * @constant {string}
+ * @memberof module:cssdoc
+ */
+const outDir = path.join(__dirname, 'docs', 'css');
+
+/**
+ * Cria diretório de saída se não existir.
+ * @function
+ * @memberof module:cssdoc
+ */
+if (!fs.existsSync(outDir)) {
+	fs.mkdirSync(outDir, { recursive: true });
+}
+
+/**
+ * Processa todos os arquivos CSS no diretório especificado,
+ * gera os arquivos HTML de documentação e um índice.
+ *
+ * @function
+ * @memberof module:cssdoc
+ */
+fs.readdir(dir, (err, files) => {
+	if (err) {
+		console.error('Erro ao ler diretório:', err.message);
+		return;
+	}
+
+	const generatedFiles = [];
+
+	files.forEach(file => {
+		if (file.endsWith('.css')) {
+			const filePath = path.join(dir, file);
+			console.log(`Processando ${filePath}`);
+
+			const cssContent = fs.readFileSync(filePath, 'utf8');
+			const docs = cssdoc(cssContent);
+
+			if (docs.length === 0) {
+				console.warn(`Nenhum bloco de documentação encontrado em ${file}`);
+				return;
+			}
+
+			const html = generateHTML(file, docs);
+			const outputFileName = 'css_' + file.replace('.css', '.html');
+			const outputFile = path.join(outDir, outputFileName);
+			fs.writeFileSync(outputFile, html, 'utf8');
+			console.log(`Documentação gerada: ${outputFile}`);
+
+			generatedFiles.push(outputFileName);
+		}
+	});
+
+	if (generatedFiles.length > 0) {
+		const indexHTML = generateIndexHTML(generatedFiles);
+		fs.writeFileSync(path.join(outDir, 'index.html'), indexHTML, 'utf8');
+		console.log(`Índice gerado: ${path.join(outDir, 'index.html')}`);
+	} else {
+		console.warn('Nenhuma documentação CSS gerada. Índice não criado.');
+	}
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cadastro.html">cadastro</a></li><li><a href="module-cssdoc.html">cssdoc</a></li><li><a href="module-index.html">index</a></li><li><a href="module-login.html">login</a></li><li><a href="module-loginAdmin.html">loginAdmin</a></li><li><a href="module-models.html">models</a></li><li><a href="module-mongodb.html">mongodb</a></li><li><a href="module-pedidos.html">pedidos</a></li><li><a href="module-perfil.html">perfil</a></li><li><a href="module-perfilAdmin.html">perfilAdmin</a></li><li><a href="module-slides.html">slides</a></li><li><a href="module-validarUsuario.html">validarUsuario</a></li></ul><h3>Externals</h3><ul><li><a href="external-Db.html">Db</a></li><li><a href="external-MongoClient.html">MongoClient</a></li></ul><h3>Classes</h3><ul><li><a href="module-models.Cardapio.html">Cardapio</a></li><li><a href="module-models.CardapioItem.html">CardapioItem</a></li><li><a href="module-models-CPF.html">CPF</a></li><li><a href="module-models-Pedido.html">Pedido</a></li><li><a href="module-models-Usuario.html">Usuario</a></li></ul><h3>Global</h3><ul><li><a href="global.html#obterAutenticacao">obterAutenticacao</a></li><li><a href="global.html#respostaNaoAutorizado">respostaNaoAutorizado</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jun 29 2025 22:11:29 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

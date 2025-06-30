@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/shared/validar-usuario.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/shared/validar-usuario.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file validar-usuario.js
+ * @description Funções para validação de CPF e dados de usuário.
+ */
+
+/**
+ * @module validarUsuario
+ */
+
+/**
+ * Remove todos os caracteres não numéricos de um CPF.
+ * @function
+ * @param {string} cpfRaw CPF com ou sem formatação
+ * @returns {string} CPF apenas com números
+ * @memberof module:validarUsuario
+ */
+function limparCPF(cpfRaw) {
+  return cpfRaw.replace(/[^\d]+/g, '');
+}
+
+/**
+ * Valida um CPF verificando tamanho, dígitos iguais e dígitos verificadores.
+ * @function
+ * @param {string} cpfRaw CPF com ou sem formatação
+ * @returns {string} Mensagem de erro vazia se válido ou mensagem de erro específica
+ * @memberof module:validarUsuario
+ */
+function validarCPF(cpfRaw) {
+  const cpf = limparCPF(cpfRaw);
+  if (cpf.length !== 11) return "CPF inválido: deve conter 11 dígitos.";
+  if (/^(\d)\1{10}$/.test(cpf)) return "CPF inválido: todos os dígitos iguais.";
+  if (!validarDigitosCPF(cpf)) return "CPF inválido: dígitos verificadores não conferem.";
+  return "";
+}
+
+/**
+ * Valida os dígitos verificadores do CPF.
+ * @function
+ * @param {string} cpf CPF somente números (11 dígitos)
+ * @returns {boolean} true se os dígitos verificadores forem válidos, false caso contrário
+ * @memberof module:validarUsuario
+ */
+function validarDigitosCPF(cpf) {
+  let soma = 0;
+  for (let i = 0; i &lt; 9; i++) soma += parseInt(cpf.charAt(i), 10) * (10 - i);
+  let resto = 11 - (soma % 11);
+  if (resto >= 10) resto = 0;
+  if (resto !== parseInt(cpf.charAt(9), 10)) return false;
+
+  soma = 0;
+  for (let i = 0; i &lt; 10; i++) soma += parseInt(cpf.charAt(i), 10) * (11 - i);
+  resto = 11 - (soma % 11);
+  if (resto >= 10) resto = 0;
+  return resto === parseInt(cpf.charAt(10), 10);
+}
+
+/**
+ * Valida os dados de um usuário.
+ * @function
+ * @param {Object} dados Objeto contendo os campos do usuário
+ * @param {string} dados.nome Nome do usuário
+ * @param {string} dados.sobrenome Sobrenome do usuário
+ * @param {string} dados.cpf CPF do usuário (com ou sem formatação)
+ * @param {string} dados.email Email do usuário
+ * @param {string} dados.senha Senha do usuário
+ * @param {string} dados.confirmarSenha Confirmação da senha
+ * @returns {Object} Objeto com mensagens de erro para cada campo inválido (campos válidos não são incluídos)
+ * @memberof module:validarUsuario
+ */
+function validarUsuario(dados) {
+  const erros = {
+    nome: "",
+    sobrenome: "",
+    cpf: "",
+    email: "",
+    senha: "",
+    confirmarSenha: ""
+  };
+
+  if (!dados.nome || dados.nome.trim().length &lt; 2) erros.nome = "Nome muito curto.";
+  if (!dados.sobrenome || dados.sobrenome.trim().length &lt; 2) erros.sobrenome = "Sobrenome muito curto.";
+  if (!dados.email || !dados.email.includes('@') || dados.email.startsWith('@') || dados.email.endsWith('@')) erros.email = "Email inválido.";
+  erros.cpf = validarCPF(dados.cpf);
+  if (!dados.senha || dados.senha.length &lt; 6) erros.senha = "Senha muito curta.";
+  if (dados.senha !== dados.confirmarSenha) erros.confirmarSenha = "As senhas não coincidem.";
+
+  for (const key in erros) {
+    if (erros[key] === "") delete erros[key];
+  }
+
+  return erros;
+}
+
+module.exports = {
+  limparCPF,
+  validarCPF,
+  validarUsuario
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cadastro.html">cadastro</a></li><li><a href="module-cssdoc.html">cssdoc</a></li><li><a href="module-index.html">index</a></li><li><a href="module-login.html">login</a></li><li><a href="module-loginAdmin.html">loginAdmin</a></li><li><a href="module-models.html">models</a></li><li><a href="module-mongodb.html">mongodb</a></li><li><a href="module-pedidos.html">pedidos</a></li><li><a href="module-perfil.html">perfil</a></li><li><a href="module-perfilAdmin.html">perfilAdmin</a></li><li><a href="module-slides.html">slides</a></li><li><a href="module-validarUsuario.html">validarUsuario</a></li></ul><h3>Externals</h3><ul><li><a href="external-Db.html">Db</a></li><li><a href="external-MongoClient.html">MongoClient</a></li></ul><h3>Classes</h3><ul><li><a href="module-models.Cardapio.html">Cardapio</a></li><li><a href="module-models.CardapioItem.html">CardapioItem</a></li><li><a href="module-models-CPF.html">CPF</a></li><li><a href="module-models-Pedido.html">Pedido</a></li><li><a href="module-models-Usuario.html">Usuario</a></li></ul><h3>Global</h3><ul><li><a href="global.html#obterAutenticacao">obterAutenticacao</a></li><li><a href="global.html#respostaNaoAutorizado">respostaNaoAutorizado</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Jun 29 2025 22:11:29 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style/login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="formLogin">
+      <div class="campo">
+        <label>Email:</label>
+        <input type="email" id="emailLogin" required />
+        <span class="status" id="statusEmailLogin"></span>
+      </div>
+
+      <div class="campo">
+        <label>Senha:</label>
+        <input type="password" id="senhaLogin" required />
+        <span class="status" id="statusSenhaLogin"></span>
+      </div>
+
+      <button type="submit" id="btnEntrar" disabled>Entrar</button>
+    </form>
+
+    <div class="botaovoltar">
+      <button>Voltar</button>
+    </div>
+
+    <div class="botaoadmin">
+      <button>Login Administrador</button>
+    </div>
+  </div>
+
+  <script type="module" src="/script/login.js"></script>
+</body>
+</html>

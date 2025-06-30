@@ -1,0 +1,137 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	display: flex;
+	justify-content: center;
+	/* em telas pequenas, empurra pro topo e adiciona scroll se necessário */
+	align-items: center;
+	min-height: 100vh;
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+/* 2) Container responsivo com max-width e width fluido */
+.cadastro-container {
+	background-color: #fff;
+	padding: 1.5rem;
+	/* usa rem ao invés de px */
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	/* fluido */
+	max-width: 360px;
+	/* não cresce além disso */
+	margin: 1rem auto;
+	/* espaço vertical extra */
+}
+
+/* 3) Tipografia */
+h2 {
+	text-align: center;
+	margin-bottom: 1rem;
+	font-size: 1.5rem;
+}
+
+/* 4) Formulário */
+.campo {
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 0.25rem;
+	font-size: 0.9rem;
+}
+
+input {
+	width: 100%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+/* 5) Mensagens de status */
+.status {
+	display: block;
+	font-size: 0.85rem;
+	margin-top: 0.25rem;
+	min-height: 1.2em;
+	font-weight: bold;
+	color: #333;
+}
+
+.status.error {
+	color: #d93025;
+}
+
+/* 6) Botões */
+button {
+	width: 100%;
+	padding: 0.75rem;
+	background-color: #28a745;
+	color: #fff;
+	font-size: 1rem;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+	background-color: #218838;
+}
+
+button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+/* botão voltar */
+.botaovoltar button {
+	margin-top: 1rem;
+	background-color: #c04444;
+}
+
+.botaovoltar button:hover:not(:disabled) {
+	background-color: #a03939;
+}
+
+/* 7) Media Queries para telas menores */
+@media (max-width: 400px) {
+	html {
+		font-size: 14px;
+	}
+
+	.cadastro-container {
+		padding: 1rem;
+		max-width: 90%;
+		/* ocupa quase toda a largura */
+	}
+
+	h2 {
+		font-size: 1.25rem;
+	}
+
+	button {
+		font-size: 0.9rem;
+		padding: 0.65rem;
+	}
+}

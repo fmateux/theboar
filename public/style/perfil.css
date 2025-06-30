@@ -1,0 +1,198 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 16px;
+	/* Base para rem */
+	line-height: 1.5;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 1rem;
+	background-color: #f4f4f4;
+	font-family: Arial, sans-serif;
+	overflow-y: auto;
+}
+
+/*----------------------------
+  Container do Perfil
+----------------------------*/
+.perfil-container {
+	background-color: #fff;
+	padding: 1.5rem;
+	/* 24px */
+	max-width: 22rem;
+	/* ~352px */
+	width: 100%;
+	border-radius: 0.5rem;
+	/* 8px */
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	margin: 1rem auto;
+}
+
+/*----------------------------
+  Título
+----------------------------*/
+.perfil-container h2 {
+	font-size: 1.75rem;
+	/* 28px */
+	color: #333;
+	margin-bottom: 1rem;
+}
+
+/*----------------------------
+  Campos de Formulário
+----------------------------*/
+.campo {
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: #444;
+	margin-bottom: 0.25rem;
+}
+
+input {
+	width: 100%;
+	padding: 0.5rem 0.75rem;
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+}
+
+/*----------------------------
+  Container de Senha e Ícone
+----------------------------*/
+.senha-container {
+	position: relative;
+}
+
+.senha-container input {
+	padding-right: 2.5rem;
+	/* espaço para o ícone */
+}
+
+.eye-icon {
+	position: absolute;
+	top: 50%;
+	right: 0.75rem;
+	transform: translateY(-50%);
+	font-size: 1.25rem;
+	color: #666;
+	cursor: pointer;
+	transition: color 0.2s ease;
+	user-select: none;
+}
+
+.eye-icon:hover {
+	color: #000;
+}
+
+/*----------------------------
+  Mensagem de Status/Erro
+----------------------------*/
+.status {
+	display: block;
+	font-size: 0.85rem;
+	color: #d93025;
+	margin-top: 0.25rem;
+	min-height: 1.2em;
+}
+
+/*----------------------------
+  Botões
+----------------------------*/
+button {
+	display: block;
+	width: 100%;
+	padding: 0.75rem;
+	/* 12px */
+	font-size: 1rem;
+	font-weight: 600;
+	color: #fff;
+	background-color: #28a745;
+	border: none;
+	border-radius: 0.25rem;
+	/* 4px */
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	margin-top: 0.75rem;
+}
+
+button:hover:not(:disabled) {
+	background-color: #218838;
+}
+
+button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+/* Botões específicos */
+#btnSalvar {
+	background-color: #28a745;
+}
+
+#btnEditar {
+	background-color: #337ab7;
+}
+
+#btnVoltar {
+	background-color: #c04444;
+}
+
+#btnEditar:hover {
+	background-color: #286090;
+}
+
+#btnVoltar:hover {
+	background-color: #a03939;
+}
+
+/*----------------------------
+  Media Queries
+----------------------------*/
+@media (max-width: 480px) {
+	html {
+		font-size: 14px;
+	}
+
+	.perfil-container {
+		padding: 1rem;
+		max-width: 90%;
+	}
+
+	.perfil-container h2 {
+		font-size: 1.5rem;
+	}
+
+	input {
+		padding: 0.4rem 0.6rem;
+	}
+
+	button {
+		padding: 0.6rem;
+	}
+
+	.eye-icon {
+		font-size: 1.1rem;
+		right: 0.5rem;
+	}
+}

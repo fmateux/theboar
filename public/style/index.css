@@ -1,0 +1,146 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	/* Base responsiva */
+	line-height: 1.4;
+}
+
+body {
+	margin: 0;
+	padding: 1rem;
+	/* Espaço em telas pequenas */
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	overflow-y: auto;
+}
+
+/*----------------------------
+  Container da Página Inicial
+----------------------------*/
+.index-container {
+	background-color: #fff;
+	padding: 1.5rem;
+	/* 24px */
+	max-width: 24rem;
+	/* 384px */
+	width: 100%;
+	/* Fluido até max-width */
+	border-radius: 0.5rem;
+	/* 8px */
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+
+/*----------------------------
+  Tipografia
+----------------------------*/
+.index-container h1 {
+	font-size: 2rem;
+	/* 32px */
+	margin-bottom: 0.5rem;
+}
+
+.index-container p {
+	font-size: 1rem;
+	/* 16px */
+	font-weight: 600;
+	margin-bottom: 1.25rem;
+	color: #333;
+}
+
+/*----------------------------
+  Botões de Ação
+----------------------------*/
+.botoes button {
+	margin: 0.5rem;
+	/* 8px */
+	padding: 0.75rem 1.25rem;
+	/* 12px 20px */
+	font-size: 1rem;
+	background-color: #28a745;
+	color: #fff;
+	border: none;
+	border-radius: 0.25rem;
+	/* 4px */
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.botoes button:hover {
+	background-color: #218838;
+}
+
+/*----------------------------
+  Botão Fixo “Apresentação”
+----------------------------*/
+.btn-apresentacao-fixo {
+	position: fixed;
+	top: 1rem;
+	/* 16px */
+	right: 1rem;
+	/* 16px */
+	z-index: 1000;
+}
+
+.btn-apresentacao-fixo button {
+	padding: 0.75rem 1.25rem;
+	font-size: 1rem;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 0.25rem;
+	box-shadow: 0 2px 6px rgba(0, 123, 255, 0.5);
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.btn-apresentacao-fixo button:hover {
+	background-color: #0056b3;
+}
+
+/*----------------------------
+  Media Queries: Telas Pequenas
+----------------------------*/
+@media (max-width: 480px) {
+	html {
+		font-size: 14px;
+		/* reduz tipografia geral */
+	}
+
+	.index-container {
+		padding: 1rem;
+		max-width: 90%;
+	}
+
+	.index-container h1 {
+		font-size: 1.75rem;
+		/* 28px */
+	}
+
+	.index-container p {
+		margin-bottom: 1rem;
+	}
+
+	.botoes button {
+		margin: 0.25rem;
+		width: 100%;
+		/* botões em bloco */
+	}
+
+	.btn-apresentacao-fixo {
+		top: 0.5rem;
+		right: 0.5rem;
+	}
+}

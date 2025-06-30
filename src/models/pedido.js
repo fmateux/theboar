@@ -1,0 +1,225 @@
+/**
+ * @file pedido.js
+ * @module models
+ * @description Módulo para manipulação de pedidos, incluindo criação, busca, atualização de status e cadastro inicial.
+ */
+
+/**
+ * @typedef {Object} MongoCollection
+ * @property {function(Object): {toArray: function(): Promise<Array<Object>>}} find
+ * @property {function(Object): Promise<Object>} findOne
+ * @property {function(Object): Promise<Object>} insertOne
+ * @property {function(Object): Promise<Object>} updateOne
+ * @property {function(Object): Promise<Object>} deleteOne
+ */
+
+const { connect, MyDataBaseCollections } = require('../db/mongodb.js');
+const { ObjectId } = require('mongodb');
+
+/**
+ * Status válidos para os pedidos.
+ * @readonly
+ * @enum {string}
+ */
+const statusPedidos = [
+  'Confirmado',
+  'Em preparo',
+  'Entregue',
+  'Cancelado',
+];
+
+/**
+ * Representa um pedido realizado por um usuário.
+ */
+class Pedido {
+  /**
+   * Cria uma instância de Pedido.
+   * @param {Object} params
+   * @param {Array<{idCardapio: number|string, quantidade: number}>} params.itens Itens do pedido.
+   * @param {string} params.observacao Observações adicionais do pedido.
+   * @param {string} params.status Status atual do pedido.
+   * @param {string} params.email E-mail do cliente que fez o pedido.
+   * @param {Date|string} params.data Data do pedido.
+   */
+  constructor({ itens = [], observacao = '', status = statusPedidos[0], email = '', data = new Date() }) {
+    this.itens = itens;
+    this.observacao = observacao;
+    this.status = status;
+    this.email = email;
+    this.data = data instanceof Date ? data : new Date(data);
+  }
+
+  /**
+   * Calcula o valor total do pedido baseado nos preços do cardápio.
+   * @param {MongoCollection} cardapioCollection Coleção do cardápio no MongoDB.
+   * @returns {Promise<number>} Valor total do pedido.
+   */
+  async calcularValorTotal(cardapioCollection) {
+    if (!Array.isArray(this.itens) || this.itens.length === 0) return 0;
+
+    const ids = this.itens.map(i =>
+      typeof i.idCardapio === 'string' ? new ObjectId(i.idCardapio) : i.idCardapio
+    );
+    const pratos = await cardapioCollection.find({ _id: { $in: ids } }).toArray();
+
+    let total = 0;
+    for (const item of this.itens) {
+      const prato = pratos.find(p =>
+        p._id.equals(
+          typeof item.idCardapio === 'string' ? new ObjectId(item.idCardapio) : item.idCardapio
+        )
+      );
+      if (prato && prato.valor) {
+        total += prato.valor * item.quantidade;
+      }
+    }
+    return total;
+  }
+
+  /**
+   * Converte a instância para objeto compatível com MongoDB para inserção.
+   * @param {number} valorTotal Valor total calculado do pedido.
+   * @returns {Object} Objeto para salvar no banco.
+   */
+  toDBObject(valorTotal) {
+    return {
+      email: this.email,
+      itens: this.itens,
+      observacao: this.observacao,
+      status: this.status,
+      data: this.data.toISOString(),
+      valor: parseFloat(valorTotal.toFixed(2))
+    };
+  }
+
+  /**
+   * Cadastra um pedido no banco.
+   * @param {string} email Email do usuário que fez o pedido.
+   * @param {Array<{idCardapio: number|string, quantidade: number}>} itens Itens do pedido.
+   * @param {string} [observacao] Observação do pedido.
+   * @param {string} [status='Confirmado'] Status inicial do pedido.
+   * @returns {Promise<boolean>} true se cadastro realizado com sucesso.
+   * @throws {Error} Caso dados inválidos ou status inválido.
+   */
+  static async cadastrarPedido(email, itens, observacao = '', status = statusPedidos[0]) {
+    if (!email || !Array.isArray(itens) || itens.length === 0) {
+      throw new Error("Dados inválidos para cadastro de pedido.");
+    }
+    if (!statusPedidos.includes(status)) {
+      throw new Error(`Status inválido. Use um dos seguintes: ${statusPedidos.join(", ")}`);
+    }
+
+    const db = await connect();
+    const pedidosCol = db.collection(MyDataBaseCollections.Pedidos);
+    const cardapioCol = db.collection(MyDataBaseCollections.Cardapio);
+
+    const pedido = new Pedido({ email, itens, observacao, status, data: new Date() });
+    const valorTotal = await pedido.calcularValorTotal(cardapioCol);
+    const pedidoDB = pedido.toDBObject(valorTotal);
+
+    await pedidosCol.insertOne(pedidoDB);
+    return true;
+  }
+
+  /**
+   * Busca todos os pedidos de um usuário pelo e-mail, com detalhes dos itens.
+   * @param {string} email E-mail do usuário.
+   * @returns {Promise<Array<Object>>} Lista de pedidos com detalhes.
+   * @throws {Error} Caso o email não seja fornecido.
+   */
+  static async buscarPedidos(email) {
+    if (!email) throw new Error("E-mail é obrigatório para buscar pedidos.");
+
+    const db = await connect();
+    const pedidosCol = db.collection(MyDataBaseCollections.Pedidos);
+    const cardapioCol = db.collection(MyDataBaseCollections.Cardapio);
+
+    const pedidos = await pedidosCol.find({ email }).toArray();
+
+    const pedidosComDetalhes = await Promise.all(pedidos.map(async pedido => {
+      const itensDetalhados = await Promise.all(pedido.itens.map(async item => {
+        const cardapioItem = await cardapioCol.findOne({ id: item.idCardapio });
+        return {
+          idCardapio: item.idCardapio,
+          quantidade: item.quantidade,
+          tipo: cardapioItem?.tipo || '',
+          titulo: cardapioItem?.titulo || 'Sem nome',
+          descricao: cardapioItem?.descricao || '',
+          valorUnitario: cardapioItem ? cardapioItem.valor.toFixed(2) : '0.00',
+          valorTotal: cardapioItem ? (cardapioItem.valor * item.quantidade).toFixed(2) : '0.00',
+        };
+      }));
+
+      return {
+        id: pedido._id.toString(),
+        data: pedido.data,
+        itens: itensDetalhados,
+        observacao: pedido.observacao || '',
+        status: pedido.status || '',
+      };
+    }));
+
+    return pedidosComDetalhes;
+  }
+
+  /**
+   * Atualiza o status de um pedido.
+   * @param {string} pedidoId ID do pedido.
+   * @param {string} novoStatus Novo status para o pedido.
+   * @returns {Promise<boolean>} true se atualizado, false caso contrário.
+   * @throws {Error} Caso parâmetros inválidos ou status inválido.
+   */
+  static async atualizarStatus(pedidoId, novoStatus) {
+    if (!pedidoId || !novoStatus) throw new Error("pedidoId e status são obrigatórios");
+    if (!statusPedidos.includes(novoStatus)) throw new Error("Status inválido");
+
+    const db = await connect();
+    const pedidosCol = db.collection(MyDataBaseCollections.Pedidos);
+
+    const result = await pedidosCol.updateOne(
+      { _id: new ObjectId(pedidoId) },
+      { $set: { status: novoStatus } }
+    );
+
+    return result.modifiedCount > 0;
+  }
+
+  /**
+   * Insere pedidos mock para testes, apenas se a coleção estiver vazia para o email informado.
+   * @param {string} email Email para associar os pedidos mock.
+   * @returns {Promise<number|undefined>} Número de pedidos inseridos ou undefined se já existirem.
+   */
+  static async cadastrarInicial(email) {
+    const db = await connect();
+    const pedidosCol = db.collection(MyDataBaseCollections.Pedidos);
+
+    const count = await pedidosCol.countDocuments({ email });
+    if (count > 0) {
+      console.log(`✔️ Já existem pedidos para o email ${email} no banco.`);
+      return;
+    }
+
+    const pedidosParaInserir = [
+      { email, data: '2025-06-01', itens: [{ idCardapio: 1, quantidade: 1 }, { idCardapio: 8, quantidade: 2 }], observacao: 'Sem sal no feijão', status: statusPedidos[0] },
+      { email, data: '2025-06-03', itens: [{ idCardapio: 7, quantidade: 1 }, { idCardapio: 15, quantidade: 1 }], observacao: 'Trocar purê por salada', status: statusPedidos[2] },
+      { email, data: '2025-06-10', itens: [{ idCardapio: 13, quantidade: 1 }, { idCardapio: 14, quantidade: 1 }], observacao: '', status: statusPedidos[2] },
+      { email, data: '2025-06-05', itens: [{ idCardapio: 10, quantidade: 1 }, { idCardapio: 12, quantidade: 2 }], observacao: 'Retirar calda', status: statusPedidos[3] },
+      { email, data: '2025-06-07', itens: [{ idCardapio: 6, quantidade: 1 }, { idCardapio: 9, quantidade: 1 }], observacao: 'Adicionar pimenta', status: statusPedidos[2] },
+      { email, data: '2025-06-06', itens: [{ idCardapio: 5, quantidade: 1 }], observacao: '', status: statusPedidos[1] },
+      { email, data: '2025-06-08', itens: [{ idCardapio: 2, quantidade: 1 }], observacao: '', status: statusPedidos[0] },
+      { email, data: '2025-06-09', itens: [{ idCardapio: 11, quantidade: 2 }], observacao: 'Sem sorvete', status: statusPedidos[1] },
+      { email, data: '2025-06-04', itens: [{ idCardapio: 4, quantidade: 2 }], observacao: '', status: statusPedidos[0] },
+      { email, data: '2025-06-02', itens: [{ idCardapio: 3, quantidade: 1 }], observacao: '', status: statusPedidos[1] },
+    ];
+
+    const result = await pedidosCol.insertMany(pedidosParaInserir);
+    console.log(`✅ Inseridos ${result.insertedCount} pedidos para o email ${email}`);
+
+    return result.insertedCount;
+  }
+}
+
+module.exports = {
+  Pedido,
+  statusPedidos,
+};

@@ -1,0 +1,178 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 16px;
+	/* base para rems */
+	line-height: 1.5;
+}
+
+/*----------------------------
+  Layout da página
+----------------------------*/
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 1rem;
+	/* espaço em telas pequenas */
+	background-color: #f4f4f4;
+	font-family: Arial, sans-serif;
+	overflow-y: auto;
+}
+
+/*----------------------------
+  Container de Login
+----------------------------*/
+.login-container {
+	background-color: #fff;
+	padding: 1.5rem;
+	/* 24px */
+	border-radius: 0.5rem;
+	/* 8px */
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 22rem;
+	/* ~352px */
+	margin: 1rem auto;
+}
+
+/*----------------------------
+  Tipografia
+----------------------------*/
+.login-container h2 {
+	font-size: 1.75rem;
+	/* 28px */
+	text-align: center;
+	margin-bottom: 1rem;
+	color: #333;
+}
+
+/*----------------------------
+  Formulário
+----------------------------*/
+.campo {
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+	font-size: 0.9rem;
+	color: #444;
+}
+
+input {
+	width: 100%;
+	padding: 0.5rem;
+	/* 8px */
+	font-size: 1rem;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+}
+
+/*----------------------------
+  Mensagem de Status/Erro
+----------------------------*/
+.status {
+	display: block;
+	font-size: 0.85rem;
+	color: #d93025;
+	margin-top: 0.25rem;
+	min-height: 1.2em;
+}
+
+/*----------------------------
+  Botões principais
+----------------------------*/
+button {
+	display: block;
+	width: 100%;
+	padding: 0.75rem;
+	/* 12px */
+	font-size: 1rem;
+	font-weight: 600;
+	color: #fff;
+	background-color: #28a745;
+	border: none;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	margin-top: 0.5rem;
+}
+
+button:hover:not(:disabled) {
+	background-color: #218838;
+}
+
+button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+/*----------------------------
+  Botões secundários
+----------------------------*/
+.botaovoltar button,
+.botaoadmin button {
+	width: auto;
+	padding: 0.6rem 1.2rem;
+	margin-top: 0.75rem;
+}
+
+.botaovoltar button {
+	background-color: #c04444;
+}
+
+.botaoadmin button {
+	background-color: #337ab7;
+}
+
+.botaovoltar button:hover {
+	background-color: #a03939;
+}
+
+.botaoadmin button:hover {
+	background-color: #286090;
+}
+
+/*----------------------------
+  Media Queries
+----------------------------*/
+@media (max-width: 480px) {
+	html {
+		font-size: 14px;
+	}
+
+	.login-container {
+		padding: 1rem;
+		max-width: 90%;
+	}
+
+	.login-container h2 {
+		font-size: 1.5rem;
+	}
+
+	input {
+		padding: 0.4rem;
+	}
+
+	button {
+		padding: 0.6rem;
+	}
+
+	.botaovoltar button,
+	.botaoadmin button {
+		width: 100%;
+	}
+}

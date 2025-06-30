@@ -1,0 +1,320 @@
+/*----------------------------
+  Reset global e box-model
+----------------------------*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/*----------------------------
+  Container Principal
+----------------------------*/
+.perfil-container {
+  background-color: #fff;
+  padding: 2rem;
+  max-width: 56rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+/*----------------------------
+  Títulos
+----------------------------*/
+.perfil-container h2 {
+  font-size: 2rem;
+  /* 32px */
+  text-align: center;
+  color: #333;
+}
+
+.perfil-container h3 {
+  font-size: 1.25rem;
+  /* 20px */
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+  color: #444;
+}
+
+/*----------------------------
+  Lista de Usuários
+----------------------------*/
+.lista-usuarios {
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  box-shadow: inset 0 0 8px #ddd;
+  max-height: 18.75rem;
+  /* 300px */
+  overflow-y: auto;
+}
+
+#listaUsuarios {
+  list-style: none;
+  width: 100%;
+}
+
+.usuario-lista-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.usuario-lista-item::-webkit-scrollbar {
+  height: 6px;
+}
+
+.usuario-lista-item::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.usuario-lista-item input[type="radio"] {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.usuario-label {
+  flex-shrink: 0;
+  min-width: 0;
+  text-overflow: ellipsis;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: calc(100% - 2.5rem);
+  cursor: pointer;
+}
+
+/*----------------------------
+  Formulário de Edição
+----------------------------*/
+.editar-usuario {
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  box-shadow: inset 0 0 8px #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.campo label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.campo input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+/*----------------------------
+  Senha com Ícone
+----------------------------*/
+.senha-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#senha {
+  flex-grow: 1;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.eye-icon:hover {
+  color: #333;
+}
+
+/*----------------------------
+  Botões Gerais
+----------------------------*/
+button#btnVoltar,
+button#btnEditar,
+button#btnSalvar,
+button#btnEditarPedidos,
+button#btnSalvarPedidos {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.3125rem;
+  /* 5px */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 7.5rem;
+  /* 120px */
+  margin-top: 0.75rem;
+}
+
+#btnVoltar {
+  background-color: #c04444;
+  color: #fff;
+}
+
+#btnEditar,
+#btnEditarPedidos {
+  background-color: #337ab7;
+  color: #fff;
+}
+
+#btnSalvar,
+#btnSalvarPedidos {
+  background-color: #28a745;
+  color: #fff;
+}
+
+#btnVoltar:hover {
+  background-color: #912c2c;
+}
+
+#btnEditar:hover,
+#btnEditarPedidos:hover {
+  background-color: #0056b3;
+}
+
+#btnSalvar:hover,
+#btnSalvarPedidos:hover {
+  background-color: #1e7e34;
+}
+
+/*----------------------------
+  Tabela de Pedidos do Usuário
+----------------------------*/
+.tabela-pedidos-usuario {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  max-height: 18.75rem;
+  overflow-y: auto;
+  table-layout: fixed;
+}
+
+.tabela-pedidos-usuario thead,
+.tabela-pedidos-usuario tbody {
+  display: block;
+  width: 100%;
+}
+
+.tabela-pedidos-usuario tbody {
+  max-height: 16.25rem;
+}
+
+.tabela-pedidos-usuario tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tabela-pedidos-usuario th,
+.tabela-pedidos-usuario td {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.tabela-pedidos-usuario th {
+  background-color: #e2e2e2;
+  font-weight: bold;
+}
+
+.tabela-pedidos-usuario tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/*----------------------------
+  Media Queries
+----------------------------*/
+@media (max-width: 768px) {
+
+  .pedido-flex,
+  .perfil-container {
+    flex-direction: column;
+  }
+
+  .lista-usuarios,
+  .editar-usuario {
+    max-height: none;
+  }
+
+  .usuario-lista-item {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .perfil-container {
+    padding: 1rem;
+  }
+
+  button#btnVoltar,
+  button#btnEditar,
+  button#btnSalvar {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .senha-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #senha {
+    margin-bottom: 0.5rem;
+  }
+}

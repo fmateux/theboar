@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Perfil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style/perfil.css" />
+</head>
+<body>
+  <div class="perfil-container">
+    <h2>Meu Perfil</h2>
+    <form id="formPerfil">
+      <div class="campo">
+        <label>Nome:</label>
+        <input type="text" name="nome" value="{{nome}}" disabled />
+      </div>
+      <div class="campo">
+        <label>Sobrenome:</label>
+        <input type="text" name="sobrenome" value="{{sobrenome}}" disabled />
+      </div>
+      <div class="campo">
+        <label>Email:</label>
+        <input type="email" name="email" value="{{email}}" disabled />
+      </div>
+      <div class="campo">
+        <label>CPF:</label>
+        <input type="text" name="cpf" value="{{cpf}}" disabled />
+      </div>
+      <div class="campo senha-container">
+        <label>Senha:</label>
+        <input type="password" name="senha" id="senha" value="{{senha}}" disabled />
+        <span id="togglePassword" class="eye-icon" title="Mostrar/Ocultar senha" style="display:none;">👁️</span>
+      </div>
+      <button type="button" id="btnEditar">Editar</button>
+      <button type="submit" id="btnSalvar">Salvar</button>
+      <button type="button" id="btnVoltar" onclick="window.location.href='/'">Voltar</button>
+      <button type="button" id="btnPedidos">Meus Pedidos</button>
+    </form>
+  </div>
+
+  <script type="module" src="/script/perfil.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <title>TheBoar – Apresentação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Reveal.js core CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <!-- Tema -->
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/white.css">
+</head>
+
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Título -->
+      <section>
+        <h1>The Boar</h1>
+        <p>Gerenciador de Pedidos</p>
+        <p><small>Usuários/Garçons criam pedidos | Admin atualiza status</small></p>
+      </section>
+
+      <!-- Slide 2: Agenda -->
+      <section>
+        <h2>Tópicos</h2>
+        <ul>
+          <li>Visão Geral</li>
+          <li>Fluxo de Usuário e Admin</li>
+          <li>Tecnologias</li>
+          <li>Segurança &amp; Melhorias</li>
+          <li>Demonstração</li>
+        </ul>
+      </section>
+
+      <!-- Slide 3: Visão Geral -->
+      <section>
+        <h2>Visão Geral do Sistema</h2>
+        <ul>
+          <li>Cadastro e login de usuários</li>
+          <li>Perfil com histórico de pedidos</li>
+          <li>Criação de pedidos com itens e observações</li>
+          <li>Painel de admin para gerenciamento de pedidos</li>
+        </ul>
+      </section>
+
+      <!-- Slide 4: Fluxo de Usuário -->
+      <section>
+        <h2>Fluxo de Usuário</h2>
+        <ol>
+          <li>Registro → Login</li>
+          <li>Selecionar itens no cardápio</li>
+          <li>Enviar pedido</li>
+          <li>Acompanhar status</li>
+        </ol>
+      </section>
+
+      <!-- Slide 5: Fluxo de Administrador -->
+      <section>
+        <h2>Fluxo do Administrador</h2>
+        <ul>
+          <li>Login Admin</li>
+          <li>Visualizar todos os pedidos</li>
+          <li>Filtrar pedidos por usuário</li>
+          <li>Atualizar perfis e status de pedidos</li>
+        </ul>
+      </section>
+
+      <!-- Slide 6: Tecnologias -->
+      <section>
+        <h2>Tecnologias Utilizadas</h2>
+        <ul>
+          <li>Node.js + Fastify</li>
+          <li>Handlebars</li>
+          <li>MongoDB</li>
+          <li>Reveal.js</li>
+          <li>Apache2 + SSL Auto Assinado</li>
+        </ul>
+      </section>
+
+      <!-- Slide 7: Segurança -->
+      <section>
+        <h2>Recursos de Segurança</h2>
+        <ul>
+          <li>Helmet &amp; CSP contra XSS</li>
+          <li>Cookies HttpOnly &amp; Secure</li>
+          <li>Validação de payload com JSON-schema</li>
+          <li>Rate-limit e sanitização (mongo-sanitize)</li>
+        </ul>
+      </section>
+
+      <!-- Slide 8: Ideias de Melhoria -->
+      <section>
+        <h2>Próximas Melhorias</h2>
+        <ul>
+          <li>Melhoria na lógica para estabelecimentos maiores</li>
+          <li>Esqueci minha senha</li>
+          <li>WebSockets para updates em tempo real</li>
+          <li>PWA (Progressive Web App)</li>
+          <li>Paginação e filtros avançados</li>
+          <li>Tela para modificação do cardápio</li>
+        </ul>
+      </section>
+
+      <!-- Slide 9: Demonstração Incorporada -->
+      <section>
+        <h2>Demo da Aplicação</h2>
+        <iframe src="https://web.f.mateus.vms.ufsc.br/" style="width:100%; height:75vh; border:1px solid #ccc;"
+          allowfullscreen>
+        </iframe>
+      </section>
+
+      <!-- Slide 10: Q&amp;A -->
+      <section>
+        <h2>Obrigado pela atenção!</h2>
+        <p><small>Percentual Fernando 50%</small></p>
+        <p><small>Percentual Raoni 50%</small></p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js core JS -->
+  <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      width: "100%",
+      height: "100%",
+      transition: 'slide',
+      dependencies: [
+        { src: 'https://unpkg.com/reveal.js/plugin/markdown/markdown.js' },
+        { src: 'https://unpkg.com/reveal.js/plugin/notes/notes.js', async: true }
+      ]
+    });
+  </script>
+</body>
+
+</html>

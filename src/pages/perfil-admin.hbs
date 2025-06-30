@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Gerenciar Usuários</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style/perfil-admin.css" />
+</head>
+<body>
+  <div class="perfil-container">
+    <h2>Painel do Administrador</h2>
+
+    <div class="lista-usuarios">
+      <h3>Usuários Cadastrados</h3>
+      <form id="formSelecionarUsuario">
+        <ul id="listaUsuarios">
+        </ul>
+      </form>
+      <button id="btnVoltar">Voltar</button>
+    </div>
+
+    <div class="editar-usuario">
+      <h3>Editar Usuário</h3>
+      <form id="formAdminPerfil">
+        <div class="campo">
+          <label for="nome">Nome:</label>
+          <input type="text" name="nome" id="nome" disabled />
+        </div>
+        <div class="campo">
+          <label for="sobrenome">Sobrenome:</label>
+          <input type="text" name="sobrenome" id="sobrenome" disabled />
+        </div>
+        <div class="campo">
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" disabled />
+        </div>
+        <div class="campo">
+          <label for="cpf">CPF:</label>
+          <input type="text" name="cpf" id="cpf" disabled />
+        </div>
+        <div class="campo">
+        <label for="senha">Senha:</label>
+        <div class="senha-container">		  
+		  <input id="senha" type="password" disabled />
+		  <span id="togglePassword" class="eye-icon" style="display:none;">👁️</span>
+		</div>
+		</div>
+
+        <button type="button" id="btnEditar">Editar</button>
+        <button type="submit" id="btnSalvar">Salvar</button>
+      </form>
+    </div>
+
+	<div class="editar-pedidos">
+	  <h3>Pedidos do Usuário</h3>
+		
+	  <div id="pedidosUsuario">
+	  </div>
+	
+	  <div id="botoesPedidosContainer"">
+		<button id="btnEditarPedidos">Editar</button>
+		<button id="btnSalvarPedidos" disabled>Salvar</button>
+	  </div>
+
+	</div>
+
+  </div>
+
+  <script type="module" src="/script/perfil-admin.js"></script>
+</body>
+</html>
